@@ -2,9 +2,10 @@
 
 ## Prerequisites
 
-- **Langflow**: Make sure Langflow is installed on your machine. You can install it via pip if you haven’t already:
+- **Langflow and Permit.io**: Make sure Langflow and Permit.io is installed on your machine. You can install it via pip if you haven’t already:
   ```bash
   pip install langflow
+  pip install permit
   ```
 
 - **Python**: Ensure you have Python 3.8 or higher.
@@ -24,13 +25,18 @@
    - In the Langflow web interface, locate the **"Import Chain"** button.
    - Click **"Import Chain"** and select the JSON file you want to upload.
    - Once uploaded, your chain configuration will be displayed on the canvas.
+  
+## Step 2: Deploying Local PDP 
 
-## Step 2: Integrating the Custom Code Component
+Before integrating Permit.io with Langflow using Custom Component, using Docker Deploy the PDP of your Permit.io Project locally on your machine so that the permission checks can happen on the Langflow end. Running your PDP locally would allow your to generate a PDP URL that can be used to access the Permit.io resources and permission checks.
+
+## Step 3: Integrating the Custom Code Component
 
 1. **Add the Custom Component to Langflow**:
    - In the Langflow web interface, add a **"Custom Component"** node to your chain.
    - Click on component and the click on code button
    - Copy the CustomComponent.py file contents on the Langflow's web IDE's Custom Component that you have created.
+   - Now add the Relevant PDP URL and API Key of your Permit.io as well as of your LLM Model that you have choosen.
 
 2. **Connect the Component in the Chain**:
    - Link your custom component to other nodes in your Langflow chain as needed.
