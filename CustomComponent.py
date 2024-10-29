@@ -15,6 +15,7 @@ class PermissionCheckComponent(Component):
     # Inputs from Langflow
     inputs = [
         MessageTextInput(name="user_name", display_name="User ID", value=""),
+        MessageTextInput(name="resource", display_name="Model", value=""),
         MessageTextInput(name="prompt", display_name="Prompt", value=""),
     ]
 
@@ -26,20 +27,18 @@ class PermissionCheckComponent(Component):
     async def build_output(self) -> Message:
         # Initialize Permit client inside the method
         permit = Permit(
-            pdp="http://localhost:7766",  # replace with your actual PDP URL
-            token="permit_key_AuNPz3FSdCtQqAUj1g2qA434feVq26YPk3e5AMvKRxt7pexKJZzCu9nIPfT7Jb2F3MRurqHXacye1GjcRUNpbw"
+            pdp="<YOUR PDP URL>",  # replace with your actual PDP URL
+            token="<YOUR API TOKEN>"
         )
 
         # Retrieve inputs from Langflow's inputs
         user_name = self.user_name  # Accessing user_name input
+        resource = self.resource  # Accessing which model you want to access
         prompt = self.prompt     # Accessing the prompt input
 
         # Debugging logs
         print(f"User Name: {user_name}")
         print(f"Prompt: {prompt}")
-
-        # Define the resource you want to check permissions on (e.g., 'chatbot')
-        resource = "chatbot"
 
         # Message content to return
         message_content = ""
@@ -52,32 +51,14 @@ class PermissionCheckComponent(Component):
             "John": {
                 "key": "user456",
                 "first_name": "John",
-                "last_name": "Smith",
-                "email": "john@company.com",
-                "attributes": {
-                    "subscriber_type": "Free",
-                    "department": "viewer"
-                }
             },
             "Max": {
                 "key": "user111",
                 "first_name": "Max",
-                "last_name": "James",
-                "email": "max@company.com",
-                "attributes": {
-                    "subscriber_type": "Premium",
-                    "department": "viewer"
-                }
             },
             "Siddhesh": {
                 "key": "user123",
                 "first_name": "Siddhesh",
-                "last_name": "Bangar",
-                "email": "sid@company.com",
-                "attributes": {
-                    "subscriber_type": "Premium",
-                    "department": "admin"
-                }
             }
         }
 
