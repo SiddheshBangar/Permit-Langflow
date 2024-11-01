@@ -15,8 +15,10 @@ class PermissionCheckComponent(Component):
     # Inputs from Langflow
     inputs = [
         MessageTextInput(name="user_name", display_name="User ID", value=""),
+        MessageTextInput(name="action", display_name="Action", value=""),
         MessageTextInput(name="resource", display_name="Model", value=""),
         MessageTextInput(name="prompt", display_name="Prompt", value=""),
+        MessageTextInput(name="pdp_url", display_name="PDP URL", value=""),
     ]
 
     # Outputs: either allowed prompt or permission denied message
@@ -25,16 +27,27 @@ class PermissionCheckComponent(Component):
     ]
 
     async def build_output(self) -> Message:
+        
+        # Retrieve inputs from Langflow's inputs
+        user_name = self.user_name  # Accessing user_name input
+        action = self.action # Accessing action input
+        resource = self.resource  # Accessing which model you want to access
+        prompt = self.prompt     # Accessing the prompt input
+        pdp_url = self.pdp_url # Accessing the PDP URL input
+        
+        
         # Initialize Permit client inside the method
         permit = Permit(
-            pdp="<YOUR PDP URL>",  # replace with your actual PDP URL
-            token="<YOUR API TOKEN>"
+            pdp=pdp_url,
+            token="permit_key_AuNPz3FSdCtQqAUj1g2qA434feVq26YPk3e5AMvKRxt7pexKJZzCu9nIPfT7Jb2F3MRurqHXacye1GjcRUNpbw"
         )
 
         # Retrieve inputs from Langflow's inputs
         user_name = self.user_name  # Accessing user_name input
+        action = self.action
         resource = self.resource  # Accessing which model you want to access
         prompt = self.prompt     # Accessing the prompt input
+        pdp_url = self.pdp_url
 
         # Debugging logs
         print(f"User Name: {user_name}")
@@ -77,7 +90,7 @@ class PermissionCheckComponent(Component):
             # Check if the user has 'write' permissions
             permitted = await permit.check(
                 user=user["key"],
-                action="write",
+                action=action,
                 resource=resource,
             )
 
